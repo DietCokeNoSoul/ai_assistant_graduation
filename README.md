@@ -20,6 +20,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 安装scss
 npm install -g cnpm --registry=https://registry.npmmirror.com
+npm i sass -D
 cnpm install sass-loader@14.1.1 --save-dev
 
 ### 安装uni-ui
