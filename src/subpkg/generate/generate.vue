@@ -1,11 +1,7 @@
 <template>
-<<<<<<< HEAD
-    <view>我的</view>
-=======
     <view>
-        <view>我的</view>
+        生成页面
     </view>
->>>>>>> home
 </template>
 
 <script>
@@ -14,14 +10,13 @@
             return{
 
             }
+        },
+        methods:{
+
         }
     }
 </script>
 
-<<<<<<< HEAD
-<style lang="scss">
-=======
 <style lang="scss" scoped>
->>>>>>> home
 
 </style>

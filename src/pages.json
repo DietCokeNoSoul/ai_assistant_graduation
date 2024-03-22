@@ -2,15 +2,27 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
+<<<<<<< HEAD
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
 	"pages": [
+=======
+			
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	},
+	"pages": [ 
+>>>>>>> home
 		{
 			"path": "pages/home/home",
 			"style": {}
 		},
+<<<<<<< HEAD
 		{
+=======
+		{ 
+>>>>>>> home
 			"path": "pages/my/my",
 			"style": {}
 		}
@@ -19,7 +31,10 @@
 		{
 			"root": "subpkg",
 			"pages": [
-
+				{
+					"path":"generate/generate",
+					"style": {}
+				}
 			]
 		}
 	],
@@ -42,9 +57,9 @@
 		]
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "张怡栗子铺",
-		"navigationBarBackgroundColor": "#00CC66",
+		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}
 }
