@@ -40,6 +40,13 @@
 						"navigationBarBackgroundColor": "#00CC66",
 						"navigationBarTextStyle": "white"
 					}
+				},
+				{
+					"path":"setting/setting_detail",
+					"style": {
+						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarTextStyle": "white"
+					}
 				}
 			]
 		}

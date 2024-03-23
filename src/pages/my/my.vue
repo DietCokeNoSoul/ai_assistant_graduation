@@ -8,12 +8,12 @@
                 <view class="my-userInfo">
                     <!-- 头像 -->
                     <view class="my-user-profile-picture">
-                        <image class="my-user-image" src="/static/profile-picture.png"></image>
+                        <image class="my-user-image" :src="userImage"></image>
                     </view>
                     <!-- 用户名和id -->
                     <view :style="{'flex-direction': column,'margin-left':'10px'}">
-                        <view :style="{'color':'white'}">未设置昵称</view>
-                        <text :style="{'color':'white'}">ID:</text>
+                        <view :style="{'color':'white'}">{{userName}}</view>
+                        <text :style="{'color':'white'}">ID:{{ userId }}</text>
                     </view>
                 </view>
                 <!-- 设置 -->
@@ -45,11 +45,18 @@
     export default{
         data(){
             return{
+                // 菜单列表
                 menuList:[
                     {name: '联系客服'},
                     {name: '关于我们'},
                     {name: '反馈问题'}
-                ]
+                ],
+                // 用户头像
+                userImage:"/static/profile-picture.png",
+                // 用户昵称
+                userName:"未设置昵称",
+                // 用户ID
+                userId:"0",
             }
         },
         methods:{

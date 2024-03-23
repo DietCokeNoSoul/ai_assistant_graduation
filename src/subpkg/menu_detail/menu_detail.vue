@@ -1,20 +1,27 @@
 <template>
+    <!-- 菜单信息容器 -->
     <view class="menu-detail-container">
+        <!-- 联系客服 -->
         <view v-if="class_name==='联系客服'" class="customer-service">
             <text>有问题请联系微信:lhy_gta</text>
         </view>
+        <!-- 关于我们 -->
         <view v-else-if="class_name==='关于我们'" class="app-detail">
             <text>这是一个文成生成式小程序</text>
             <text>使用接口:GPT3.5</text>
         </view>
+        <!-- 反馈问题 -->
         <view v-else class="submit-bug">
             <view class="submit-bug-text-box">
                 <text class="submit-bug-text">反馈类型</text>
+                <!-- 选项 -->
                 <uni-data-checkbox v-model="radioValue" :localdata="radioClass"></uni-data-checkbox>
                 <text class="submit-bug-text">反馈内容</text>
+                <!-- 输入内容 -->
                 <uni-easyinput v-model="detail_value" type="textarea" placeholder="请输入内容" maxlength="200" @input="inputDetail"/>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'30px',' text-align': 'right'}"> 字数:{{ detailLength }}/200</view>
                 <text class="submit-bug-text">联系方式</text>
+                <!-- 输入联系方式 -->
                 <uni-easyinput v-model="Info_value" type="text" placeholder="请输入内容" maxlength="30" @input="inputInfo"/>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'30px',' text-align': 'right'}"> 字数:{{ infoLength }}/30</view>
             </view>
@@ -46,8 +53,13 @@
             }
         },
         onLoad() {
+            uni.showLoading({
+                title: '加载中',
+                mask: true
+            })
             //获取页面参数
             this.class_name = this.name
+            uni.hideLoading()
         },
         methods:{
             //输入框字数
@@ -60,11 +72,23 @@
             },
             //提交表单
             submitForm(){
-
+                uni.showModal({
+                    title: '提示',
+                    content: '确定提交吗？',
+                    success: function (res) {
+                        if (res.confirm) {
+                            // uni.removeStorageSync('token')
+                            uni.reLaunch({
+                                url: '/pages/my/my'
+                            })
+                        }
+                    }
+                })
             }
         },
         //vue3支持props来接收页面参数
         props:{
+            // 页面参数
             name:{
                 type: String,
                 default: ''
