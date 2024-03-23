@@ -2,29 +2,21 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-<<<<<<< HEAD
-			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
-		}
-	},
-	"pages": [
-=======
 			
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
 	"pages": [ 
->>>>>>> home
 		{
 			"path": "pages/home/home",
 			"style": {}
 		},
-<<<<<<< HEAD
-		{
-=======
 		{ 
->>>>>>> home
 			"path": "pages/my/my",
-			"style": {}
+			"style": {
+				"navigationBarBackgroundColor": "#00CC66",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"subPackages": [
@@ -34,6 +26,20 @@
 				{
 					"path":"generate/generate",
 					"style": {}
+				},
+				{
+					"path":"menu_detail/menu_detail",
+					"style": {
+						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarTextStyle": "white"
+					}
+				},
+				{
+					"path":"setting/setting",
+					"style": {
+						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarTextStyle": "white"
+					}
 				}
 			]
 		}

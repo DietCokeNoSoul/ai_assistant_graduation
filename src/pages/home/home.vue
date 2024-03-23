@@ -1,7 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <view>首页</view>
-=======
     <view>
         <!-- 总标题 -->
         <text class="home-title">AI小助手</text>
@@ -23,16 +20,12 @@
             </view>
     </view>
     </view>
->>>>>>> home
 </template>
 
 <script>
     export default{
         data(){
             return{
-<<<<<<< HEAD
-
-=======
                 //一级选择的内容
                 classItem:'',
                 //一级选择表
@@ -131,16 +124,12 @@
                 uni.navigateTo({
                      url: '/subpkg/generate/generate?name='+item.text 
                 })
->>>>>>> home
             }
         }
     }
 </script>
 
 <style lang="scss">
-<<<<<<< HEAD
-
-=======
 .home-title{
     font-size: 50rpx;
     font-weight: bold;
@@ -179,5 +168,4 @@
         }
     }
 }
->>>>>>> home
 </style>
