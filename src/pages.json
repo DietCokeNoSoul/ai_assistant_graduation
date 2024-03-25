@@ -24,7 +24,23 @@
 			"root": "subpkg",
 			"pages": [
 				{
-					"path":"generate/generate",
+					"path":"generate/generate_marketing",
+					"style": {}
+				},
+				{
+					"path":"generate/generate_video",
+					"style": {}
+				},
+				{
+					"path":"generate/generate_business",
+					"style": {}
+				},
+				{
+					"path":"generate/generate_eBusiness",
+					"style": {}
+				},
+				{
+					"path":"generate/generate_chat",
 					"style": {}
 				},
 				{

@@ -27,7 +27,7 @@
         data(){
             return{
                 //一级选择的内容
-                classItem:'',
+                classItem:'营销类',
                 //一级选择表
                 value:0,
                 range: [
@@ -46,7 +46,7 @@
                     {"value": 3,"text": "微信推广文案"},
                     {"value": 4,"text": "知乎文章"},
                     {"value": 5,"text": "品牌故事生成"},
-                    {"value": 6,"text": "线下活动策划"}],
+                    {"value": 6,"text": "活动策划"}],
                 //视频类
                 videoList:[
                     {"value": 0,"text": "口播类视频创意"},
@@ -121,9 +121,38 @@
             },
             //跳转到生成页面
             gotoGenerate(item){
-                uni.navigateTo({
-                     url: '/subpkg/generate/generate?name='+item.text 
-                })
+                switch(this.classItem){
+                    case '营销类':{
+                        uni.navigateTo({
+                            url: '/subpkg/generate/generate_marketing?name='+item.text
+                        })
+                        break
+                    }
+                    case '视频类':{
+                        uni.navigateTo({
+                            url: '/subpkg/generate/generate_video?name='+item.text
+                        })
+                        break
+                    }
+                    case '商业类':{
+                        uni.navigateTo({
+                            url: '/subpkg/generate/generate_business?name='+item.text
+                        })
+                        break
+                    }
+                    case '电商类':{
+                        uni.navigateTo({
+                            url: '/subpkg/generate/generate_eBusiness?name='+item.text
+                        })
+                        break
+                    }
+                    case '角色聊':{
+                        uni.navigateTo({
+                            url: '/subpkg/generate/generate_chat?name='+item.text
+                        })
+                        break
+                    }
+                }
             }
         }
     }

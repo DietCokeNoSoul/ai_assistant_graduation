@@ -1,18 +1,24 @@
 <template>
+    <!-- 设置容器 -->
     <view class="setting-detail-container">
+        <!-- 设置昵称 -->
         <view v-if="settingClass==='昵称'" class="setting-detail-box">
             <text :style="{'margin-bottom':'20px'}">昵称</text>
-            <uni-easyinput v-model= "props_value" type="text" maxlength="12" @input="inputName">{{  props_value }}</uni-easyinput>
-            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    props_value.length }}/30</view>
+            <!-- 输入昵称 -->
+            <uni-easyinput v-model= "props_value" type="text" maxlength="16" @input="inputName">{{  props_value }}</uni-easyinput>
+            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    props_value.length }}/16</view>
         </view>
+        <!-- 设置头像 -->
         <view v-else>
             <view class="user-image-container">
+                <!-- 图片区域 -->
                 <view class="user-image-box">
                     <image class="user-image" :src="props_value" />
                 </view>
                 <button class="upload-image" @click="uploadImage">上传</button>
             </view>
         </view>
+        <!-- 提交按钮 -->
         <button class="submin-name-btn" @click="submitForm">提交</button>
     </view>
 </template>
