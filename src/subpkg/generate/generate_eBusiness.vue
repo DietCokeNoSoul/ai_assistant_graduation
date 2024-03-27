@@ -1,30 +1,86 @@
 <template>
-    <!-- 页面容器 -->
     <view class="generate-container">
         <!-- 标题 -->
         <text class="generate-title">{{ name }}</text>
         <!-- 信息输入区域 -->
         <view class="generate-box">
-            <text class="generate-item-title">品牌名称</text>
-            <uni-easyinput v-model= "name_value" type="text" maxlength="30" @input="inputName" placeholder="例:苹果">{{  name_value }}</uni-easyinput>
-            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    name_value.length }}/30</view>
-            <text class="generate-item-title">营销主体</text>
-            <uni-easyinput v-model= "object_value" type="text" maxlength="30" @input="inputObject" placeholder="例:iphone16">{{  object_value }}</uni-easyinput>
-            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    object_value.length }}/30</view>
-            <text class="generate-item-title">主题</text>
-            <uni-easyinput v-model= "main_value" type="text" maxlength="30" @input="inputMain">{{  main_value }}</uni-easyinput>
-            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    main_value.length }}/30</view>
-            <view class="choose-box">
-                <text class="generate-item-title">文案类型</text>
-                <uni-data-select v-model="class_value" :localdata="class_range" :clear="false" @change="changeClass"></uni-data-select>
+            <!-- 商品描述 -->
+            <view v-if="name==='商品描述'||name==='好评批量生成'||name==='专业回复评论'">
+                <text class="generate-item-title" v-if="name==='商品描述'||name==='好评批量生成'||name==='专业回复评论'">商品名称</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "name_value" type="text" maxlength="30" @input="inputName" placeholder="例:拯救者y9000p游戏本">{{  name_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ name_value.length }}/30</view>
             </view>
-            <view class="choose-box">
-                <text class="generate-item-title">文案语气</text>
-                <uni-data-select v-model="tone_value" :localdata="tone_range" :clear="false" @change="changeTone"></uni-data-select>
+            <!-- 商品描述 -->
+            <view v-if="name==='商品描述'">
+                <text class="generate-item-title" v-if="name==='商品描述'">原商品描述</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "detail_value" type="text" maxlength="30" @input="inputDetail" placeholder="例:复制粘贴原来的描述(没有则填 无)">{{  detail_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ detail_value.length }}/30</view>
             </view>
-            <text class="generate-item-title">目标人群</text>
-            <uni-easyinput v-model= "people_value" type="text" maxlength="16" @input="inputPeople">{{  people_value }}</uni-easyinput>
-            <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{    people_value.length }}/16</view>
+            <!-- 好评批量生成 -->
+            <view v-if="name==='好评批量生成'">
+                <text class="generate-item-title" v-if="name==='好评批量生成'">好评重点</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "point_value" type="text" maxlength="30" @input="inputPoint" placeholder="例:性能超好,能流畅游玩各种3A游戏大作">{{  point_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ point_value.length }}/30</view>
+            </view>
+            <!-- 专业回复评论 -->
+            <view v-if="name==='专业回复评论'">
+                <text class="generate-item-title">用户评论</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "comment_value" type="text" maxlength="500" @input="inputComment" placeholder="粘贴用户评论">{{  comment_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ comment_value.length }}/500</view>
+            </view>
+            <!-- 专业回复评论 -->
+            <view v-if="name==='专业回复评论'">
+                <text class="generate-item-title">补偿机制</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "compensation_value" type="text" maxlength="100" @input="inputCompensation" placeholder="差评触发,没有则填无,例:20元无门槛券">{{  compensation_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ compensation_value.length }}/100</view>
+            </view>
+            <!-- 店铺介绍 -->
+            <view v-if="name==='店铺介绍'">
+                <text class="generate-item-title">品牌名称</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "brand_value" type="text" maxlength="30" @input="inputBrand" placeholder="例:拯救者">{{  brand_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ brand_value.length }}/30</view>
+            </view>
+            <!-- 店铺介绍 -->
+            <view v-if="name==='店铺介绍'">
+                <text class="generate-item-title">主营业务</text>
+                <view :style="{'margin-top':'10px'}">
+                    <uni-easyinput v-model= "business_value" type="text" maxlength="30" @input="inputBusiness" placeholder="例:高性能笔记本电脑">{{  business_value }}</uni-easyinput>
+                </view>
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ business_value.length }}/30</view>
+            </view>
+            <!-- 选择区域(商品描述) -->
+            <view class="choose-box" v-if="name==='商品描述'">
+                <text class="choose-item-title">描述重点</text>
+                <view :style="{'margin-bottom':'30px'}">
+                    <uni-data-select v-model="key_value" :localdata="key_range" :clear="false" @change="changeKey"></uni-data-select>
+                </view>
+            </view>  
+            <!-- 选择区域(商品描述 好评批量生成 店铺介绍') -->
+            <view class="choose-box" v-if="name==='商品描述'||name==='好评批量生成'||name==='店铺介绍'">
+                <text class="choose-item-title">文案风格</text>
+                <view :style="{'margin-bottom':'30px'}">
+                    <uni-data-select v-model="style_value" :localdata="style_range" :clear="false" @change="changeStyle"></uni-data-select>
+                </view>
+            </view>    
+            <!-- 好评批量生成 -->
+            <view class="choose-box" v-if="name==='好评批量生成'">
+                <text class="choose-item-title">字数要求</text>
+                <view :style="{'margin-bottom':'30px'}">
+                    <uni-data-select v-model="count_value" :localdata="count_range" :clear="false" @change="changeCount"></uni-data-select>
+                </view>
+            </view>    
         </view>
         <button class="submit-btn">生成</button>
     </view>
@@ -34,66 +90,80 @@
     export default{
         data(){
             return{
-                //品牌名称
+                //商品描述
                 name_value:'',
-                //营销主体
-                object_value:'',
-                //主题
-                main_value:'',
-                //目标人群
-                people_value:'',
-                //文案类型
-                class_value:0,
-                class_range:[{
-                    "value": 0,
-                    "text": "种草文案"
-                },{
-                    "value": 1,
-                    "text": "评测文案"
-                },{
-                    "value": 2,
-                    "text": "教程文案"}],
-                //文案语气
-                tone_value:0,
-                tone_range:[{
-                    "value": 0,
-                    "text": "活泼"
-                },{
-                    "value": 1,
-                    "text": "文艺"
-                },{
-                    "value": 2,
-                    "text": "幽默"
-                },{
-                    "value": 3,
-                    "text": "专业"}]
+                //商品描述
+                detail_value:'',
+                //好评重点
+                point_value:'',
+                //用户评论
+                comment_value:'',
+                //补偿机制
+                compensation_value:'',
+                //店铺介绍
+                brand_value:'',
+                //主营业务
+                business_value:'',
+                //描述重点
+                key_value:0,
+                key_range:[
+                    {"value": 0,"text": "使用场景"},
+                    {"value": 1,"text": "用户痛点"},
+                    {"value": 2,"text": "品牌故事"},
+                    {"value": 3,"text": "产品描述"},
+                    {"value": 4,"text": "设计说明"},
+                    {"value": 5,"text": "竞品对比"}],
+                //文案风格
+                style_value:0,
+                style_range:[
+                    {"value": 0,"text": "激动"},
+                    {"value": 1,"text": "活泼"},
+                    {"value": 2,"text": "幽默"},
+                    {"value": 3,"text": "专业"},
+                    {"value": 4,"text": "文艺"}],
+                //字数要求
+                count_value:0,
+                count_range:[
+                    {"value": 0,"text": "短评"},
+                    {"value": 1,"text": "中评"},
+                    {"value": 2,"text": "长评"},
+                    {"value": 3,"text": "自由发挥"}],
             }
         },
         methods:{
-            //输入品牌名称
+            //商品名称
             inputName(e){
-                
+
             },
-            //输入营销主体
-            inputObject(e){
-                
+            //商品描述
+            inputDetail(e){
+
             },
-            //输入主题
-            inputMain(e){
-                
+            //描述重点
+            changeKey(e){
+
             },
-            //输入目标人群
-            inputPeople(e){
-                
+            //好评重点
+            inputPoint(e){
+
             },
-            //选择文案类型
-            changeClass(e){
-                
+            //文案风格
+            changeStyle(e){
+
             },
-            //选择文案语气
-            changeTone(e){
-                
-            }
+            //字数要求
+            changeCount(e){
+
+            },
+            //用户评论
+            inputComment(e){
+
+            },
+            //补偿机制
+            inputCompensation(e){
+
+            },
+
         },
         props:{
             name:{
@@ -121,13 +191,29 @@
             font-size: 35rpx;
             color:#6d6d6d;
             margin-bottom: 10px;
+            margin-top: 10px;
+            &::before{
+                content: '*';
+                color:red;
+            }
         }
         .choose-box{
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            .choose-item-title{
+                font-size: 35rpx;
+                color:#6d6d6d;
+                margin-bottom: 10px;
+                &::before{
+                    content: '*';
+                    color:red;
+                }
+            }
         }
     }
     .submit-btn{
-        margin-top: 40px;
+        margin-top: 60px;
         background-color: black;
         color: white;
         font-size: 30rpx;
