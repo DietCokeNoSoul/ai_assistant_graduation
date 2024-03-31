@@ -40,7 +40,7 @@
 					"style": {}
 				},
 				{
-					"path":"generate/generate_chat",
+					"path":"generate/generate_tool",
 					"style": {}
 				},
 				{
@@ -63,6 +63,10 @@
 						"navigationBarBackgroundColor": "#00CC66",
 						"navigationBarTextStyle": "white"
 					}
+				},
+				{
+					"path":"generate/generate_detail",
+					"style": {}
 				}
 			]
 		}
@@ -73,14 +77,14 @@
 			{
 				"pagePath": "pages/home/home",
 				"text": "首页",
-				"iconPath": "static/tabbar/home.png",
-				"selectedIconPath": "static/tabbar/home-a.png"
+				"iconPath": "static/tb/home.png",
+				"selectedIconPath": "static/tb/home-a.png"
 			},
 			{
 				"pagePath": "pages/my/my",
 				"text": "我的",
-				"iconPath": "static/tabbar/my.png",
-				"selectedIconPath": "static/tabbar/my-a.png"
+				"iconPath": "static/tb/my.png",
+				"selectedIconPath": "static/tb/my-a.png"
 			}
 
 		]

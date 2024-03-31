@@ -83,6 +83,7 @@
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ item_value.length }}/16</view>
             </view>
+            <!-- 线下活动策划 -->            
             <view v-if="name==='活动策划'">
                 <text class="generate-item-title">活动主题</text>
                 <view :style="{'margin-top':'10px'}">
@@ -90,6 +91,7 @@
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ main_value.length }}/30</view>
             </view>
+            <!-- 线下活动策划 -->
             <view v-if="name==='活动策划'">
                 <text class="generate-item-title">参与人数</text>
                 <view :style="{'margin-top':'10px'}">
@@ -97,6 +99,7 @@
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ count_value.length }}/16</view>
             </view>
+            <!-- 线下活动策划 -->
             <view v-if="name==='活动策划'">
                 <text class="generate-item-title">活动目的</text>
                 <view :style="{'margin-top':'10px'}">
@@ -138,7 +141,7 @@
             </view>
             
         </view>
-        <button class="submit-btn">生成</button>
+        <button class="submit-btn" @click="gotoDetail">生成</button>
     </view>
 </template>
 
@@ -278,6 +281,12 @@
             //输入活动目的
             inputGoal(e){
                 
+            },
+            //跳转到生成详情页面
+            gotoDetail(){
+                uni.navigateTo({
+                    url: '/subpkg/generate/generate_detail?name='+this.name
+                })
             }
         },
         props:{

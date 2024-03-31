@@ -104,7 +104,7 @@
                 </view>
             </view>        
         </view>
-        <button class="submit-btn">生成</button>
+        <button class="submit-btn" @click="gotoDetail">生成</button>
     </view>
 </template>
 
@@ -209,6 +209,12 @@
             changeTone(e){
 
             },
+            //跳转到生成详情页
+            gotoDetail(){
+                uni.navigateTo({
+                    url:'/subpkg/generate/generate_detail'
+                })
+            }
         },
         props:{
             name:{

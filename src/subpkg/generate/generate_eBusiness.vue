@@ -82,7 +82,7 @@
                 </view>
             </view>    
         </view>
-        <button class="submit-btn">生成</button>
+        <button class="submit-btn" @click="gotoDetail">生成</button>
     </view>
 </template>
 
@@ -163,6 +163,12 @@
             inputCompensation(e){
 
             },
+            //生成
+            gotoDetail(){
+                uni.navigateTo({
+                    url: '/subpkg/generate/generate_detail'
+                })
+            }
 
         },
         props:{

@@ -5,7 +5,7 @@
         <!-- 选择区域 -->
         <view class="class-container">
             <!-- 选择标题 -->
-            <text class="class-title" v-if="classItem==='角色聊'">一个随意倾诉的地方</text>
+            <text class="class-title" v-if="classItem==='工具类'">请选择要使用的工具</text>
             <text class="class-title" v-else>请选择要生成的类型</text>
             <!-- 一级选择列表 -->
             <view class="class-list">
@@ -18,7 +18,7 @@
                     <button class="btn-class-list-lv2-item" @click="gotoGenerate(item)">生成</button>
                 </view>
             </view>
-    </view>
+        </view>
     </view>
 </template>
 
@@ -35,7 +35,7 @@
                     {"value": 1,"text": "视频"},
                     {"value": 2,"text": "商业"},
                     {"value": 3,"text": "电商"},
-                    {"value": 4,"text": "聊天"}],
+                    {"value": 4,"text": "工具"}],
                 //二级选择表
                 rangeLv2:[],
                 //营销类
@@ -67,14 +67,20 @@
                     {"value": 1,"text": "好评批量生成"},
                     {"value": 2,"text": "专业回复评论"},
                     {"value": 3,"text": "店铺介绍"}],
-                //角色聊
-                chatList:[{
-                    "value": 0,"text": "情感倾诉"},
-                    {"value": 1,"text": "心理咨询"},
-                    {"value": 2,"text": "情感分析"},
-                    {"value": 3,"text": "情感疏导"},
-                    {"value": 4,"text": "情感陪聊"
-                }]
+                //工具类
+                ToolList:[
+                    {"value": 0,"text": "年化利率计算器490"},
+                    {"value": 1,"text": "文字翻译"},
+                    {"value": 2,"text": "Excel公式生成393"},
+                    {"value": 3,"text": "Excel自动化脚本394"},
+                    {"value": 4,"text": "合同模版290"},
+                    {"value": 5,"text": "免责声明281"},
+                    {"value": 6,"text": "分销协议282"},
+                    {"value": 7,"text": "服务条款280"},
+                    {"value": 8,"text": "隐私协议279"},
+                    {"value": 9,"text": "工作邮件199"},
+                    {"value": 10,"text": "可行性报告150"},
+                    {"value": 11,"text": "售后服务协议151"},]
             }
         },
         onLoad() {
@@ -110,8 +116,8 @@
                         break
                     }
                     case 4:{
-                        this.rangeLv2=this.chatList
-                        this.classItem='角色聊'
+                        this.rangeLv2=this.ToolList
+                        this.classItem='工具类'
                         break
                     }
                     default:{
@@ -146,9 +152,9 @@
                         })
                         break
                     }
-                    case '角色聊':{
+                    case '工具类':{
                         uni.navigateTo({
-                            url: '/subpkg/generate/generate_chat?name='+item.text
+                            url: '/subpkg/generate/generate_tool?name='+item.text
                         })
                         break
                     }
