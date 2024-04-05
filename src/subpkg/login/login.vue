@@ -12,7 +12,7 @@
         </view>
         <!-- 设置昵称 -->
         <view  class="setting-detail-box">
-            <text :style="{'margin-bottom':'20px'}">昵称</text>
+            <text :style="{'margin-bottom':'20px'}">昵称(不少于6个字符)</text>
             <!-- 输入昵称 -->
             <uni-easyinput v-model= "name" type="text" maxlength="16" @input="inputName"></uni-easyinput>
             <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ name.length }}/16</view>
@@ -71,6 +71,9 @@
                                 _openid: this.openid,
                                 expiredTime: expiredTime
                             });
+                            // 保存用户信息到本地缓存
+                            uni.setStorageSync('userName', this.name);
+                            uni.setStorageSync('userImage', this.avatarUrl);
                             uni.reLaunch({
                                  url: '/pages/my/my?name='+this.name+'&headImg='+this.avatarUrl 
                             })

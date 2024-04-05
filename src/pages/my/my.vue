@@ -57,8 +57,6 @@ import { LoginIn } from '../../util/LoginIn.js'
                 userImage:"/static/profile-picture.png",
                 // 用户昵称
                 userName:"未登录",
-                // 用户ID
-                // userId:"0",
                 // 用户OPENID
                 openid:""
             }
@@ -79,8 +77,10 @@ import { LoginIn } from '../../util/LoginIn.js'
                     },
                     complete: userInfo => {
                         this.userName = userInfo.result.data[0].name
-                        // this.userId = userInfo.result.data[0].id
                         this.userImage = userInfo.result.data[0].headImg
+                        // 保存用户信息到本地缓存
+                        uni.setStorageSync('userName', this.userName);
+                        uni.setStorageSync('userImage', this.userImage);
                     }
                 })
                 uni.hideLoading() 
@@ -96,6 +96,9 @@ import { LoginIn } from '../../util/LoginIn.js'
                                 console.log(res)
                                 this.userName = res.result.data[0].name
                                 this.userImage = res.result.data[0].headImg
+                                // 保存用户信息到本地缓存
+                                uni.setStorageSync('userName', this.userName);
+                                uni.setStorageSync('userImage', this.userImage);
                             })
                         }
                     }
@@ -114,9 +117,18 @@ import { LoginIn } from '../../util/LoginIn.js'
             },
             // 跳转设置
             gotoSetting(){
-                uni.navigateTo({
+                if(!checkLogin()){
+                    uni.showToast({
+                        title: '请先登录',
+                        icon: 'none',
+                        mask: true
+                    })
+                }
+                else{
+                    uni.navigateTo({
                     url: '/subpkg/setting/setting'
                 })
+                }
             },
             // 跳转登录
             gotoLogin(){
@@ -135,8 +147,10 @@ import { LoginIn } from '../../util/LoginIn.js'
                     },
                     complete: userInfo => {
                         this.userName = userInfo.result.data[0].name
-                        // this.userId = userInfo.result.data[0].id
                         this.userImage = userInfo.result.data[0].headImg
+                        // 保存用户信息到本地缓存
+                        uni.setStorageSync('userName', this.userName);
+                        uni.setStorageSync('userImage', this.userImage);
                     }
                 })
                 uni.hideLoading() 
@@ -149,9 +163,11 @@ import { LoginIn } from '../../util/LoginIn.js'
                         success:({ confirm, cancel }) => {
                             if (confirm) {
                                 LoginIn().then(res => {
-                                    console.log(res)
                                     this.userName = res.result.data[0].name
                                     this.userImage = res.result.data[0].headImg
+                                    // 保存用户信息到本地缓存
+                                    uni.setStorageSync('userName', this.userName);
+                                    uni.setStorageSync('userImage', this.userImage);
                                 })
                             }
                         }

@@ -52,7 +52,9 @@
                     content: '确定退出登录吗？',
                     success: function (res) {
                         if (res.confirm) {
-                            // uni.removeStorageSync('token')
+                            uni.removeStorageSync('userName')
+                            uni.removeStorageSync('userImage')
+                            uni.removeStorageSync('loginStatus')
                             uni.reLaunch({
                                 url: '/pages/my/my'
                             })
@@ -60,6 +62,10 @@
                     }
                 })
             }
+        },
+        onLoad() {
+            this.userName = uni.getStorageSync('userName')
+            this.userImage = uni.getStorageSync('userImage')
         }
     }
 </script>

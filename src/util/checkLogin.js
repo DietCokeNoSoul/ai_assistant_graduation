@@ -8,6 +8,8 @@ function checkLogin(){
       } else {
         // 登录状态已过期，清除本地缓存中的登录状态
         uni.removeStorageSync('loginStatus');
+        uni.removeStorageSync('userName');
+        uni.removeStorageSync('userImage');
         return false;
       }
     } else {
