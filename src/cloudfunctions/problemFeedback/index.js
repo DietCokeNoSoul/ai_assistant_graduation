@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
   return await db.collection('ProblemFeedback').add({
     data: {
       type: event.type,
-      context: event.content,
+      context: event.context,
       contact: event.contact,
       createTime: new Date(),
     }
