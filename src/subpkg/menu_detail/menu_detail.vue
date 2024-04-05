@@ -72,14 +72,39 @@
             },
             //提交表单
             submitForm(){
+                if(this.detail_value === '' || this.Info_value === ''){
+                    uni.showToast({
+                        title: '请填写完整信息',
+                        icon: 'none'
+                    })
+                    return
+                }
                 uni.showModal({
                     title: '提示',
                     content: '确定提交吗？',
-                    success: function (res) {
-                        if (res.confirm) {
-                            // uni.removeStorageSync('token')
-                            uni.reLaunch({
-                                url: '/pages/my/my'
+                    success: ({ confirm, cancel }) => {
+                        if (confirm) {
+                            let type = ''
+                            if(this.radioValue === 0){
+                                type = '建议'
+                            }
+                            else{
+                                type = '故障'
+                            }
+                            console.log(this.detail_value)
+                            console.log(this.Info_value)
+                            wx.cloud.callFunction({
+                                name:'problemFeedback',
+                                data:{
+                                    type: type,
+                                    context: this.detail_value,
+                                    contact: this.Info_value,
+                                },
+                                success: res => {
+                                    uni.reLaunch({
+                                        url: '/pages/my/my'
+                                    })
+                                },
                             })
                         }
                     }
