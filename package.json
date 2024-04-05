@@ -69,10 +69,13 @@
     "@dcloudio/uni-stat": "^2.0.2-3090920231225001",
     "@dcloudio/uni-ui": "^1.5.2",
     "@vue/shared": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.8.3",
     "flyio": "^0.6.2",
+    "request-promise": "^4.2.6",
     "vue": ">= 2.6.14 < 2.7",
-    "vuex": "^3.2.0"
+    "vuex": "^3.2.0",
+    "wx-server-sdk": "^3.0.1"
   },
   "devDependencies": {
     "@dcloudio/types": "^3.3.2",

@@ -5,17 +5,17 @@
             <!-- 用户信息拦 -->
             <view class="my-userInfo-box">
                 <!-- 用户信息 -->
-                <view class="my-userInfo">
+                <button class="my-userInfo" plain="true" @click="gotoLogin">
                     <!-- 头像 -->
                     <view class="my-user-profile-picture">
                         <image class="my-user-image" :src="userImage"></image>
                     </view>
                     <!-- 用户名和id -->
-                    <view :style="{'flex-direction': column,'margin-left':'10px'}">
-                        <view :style="{'color':'white'}">{{userName}}</view>
-                        <text :style="{'color':'white'}">ID:{{ userId }}</text>
+                    <view :style="{'text-align': 'left','flex-direction': 'column','margin-left':'10px'}">
+                        <view :style="{'color':'white','line-height':'80rpx','font-size':'40rpx'}">{{userName}}</view>
+                        <!-- <text :style="{'color':'white'}">ID:{{ userId }}</text> -->
                     </view>
-                </view>
+                </button>
                 <!-- 设置 -->
                 <view class="gear-icon">
                     <uni-icons type="gear" size="40px" color="white" @click="gotoSetting"></uni-icons>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { checkLogin } from '../../util/checkLogin.js'
+import { LoginIn } from '../../util/LoginIn.js'
     export default{
         data(){
             return{
@@ -54,21 +56,107 @@
                 // 用户头像
                 userImage:"/static/profile-picture.png",
                 // 用户昵称
-                userName:"未设置昵称",
+                userName:"未登录",
                 // 用户ID
-                userId:"0",
+                // userId:"0",
+                // 用户OPENID
+                openid:""
             }
         },
+        onLoad(option) {
+            // 检查登录状态
+            if(checkLogin()){//已登录
+                uni.showLoading({
+                    title: '加载中',
+                    mask: true
+                })
+                //查询用户信息
+                const loginStatus = uni.getStorageSync('loginStatus');
+                wx.cloud.callFunction({
+                    name: 'getUserInfo',
+                    data: {
+                        _openid: loginStatus._openid
+                    },
+                    complete: userInfo => {
+                        this.userName = userInfo.result.data[0].name
+                        // this.userId = userInfo.result.data[0].id
+                        this.userImage = userInfo.result.data[0].headImg
+                    }
+                })
+                uni.hideLoading() 
+            }
+            else{//未登录
+                uni.showModal({
+                    title: '是否微信登录',
+                    content: '',
+                    showCancel: true,
+                    success:({ confirm, cancel }) => {
+                        if (confirm) {
+                            LoginIn().then(res => {
+                                console.log(res)
+                                this.userName = res.result.data[0].name
+                                this.userImage = res.result.data[0].headImg
+                            })
+                        }
+                    }
+                });
+            }
+            //注册后返回的用户信息
+            this.userName = option.name
+            this.userImage = option.headImg
+        },
         methods:{
+            // 跳转菜单详情
             gotoMenuDetail(item){
                 uni.navigateTo({
                      url: '/subpkg/menu_detail/menu_detail?name='+item.name 
                 })
             },
+            // 跳转设置
             gotoSetting(){
                 uni.navigateTo({
                     url: '/subpkg/setting/setting'
                 })
+            },
+            // 跳转登录
+            gotoLogin(){
+            // 检查登录状态
+            if(checkLogin()){//已登录
+                uni.showLoading({
+                    title: '加载中',
+                    mask: true
+                })
+                //查询用户信息
+                const loginStatus = uni.getStorageSync('loginStatus');
+                wx.cloud.callFunction({
+                    name: 'getUserInfo',
+                    data: {
+                        _openid: loginStatus._openid
+                    },
+                    complete: userInfo => {
+                        this.userName = userInfo.result.data[0].name
+                        // this.userId = userInfo.result.data[0].id
+                        this.userImage = userInfo.result.data[0].headImg
+                    }
+                })
+                uni.hideLoading() 
+                }
+                else{//未登录
+                    uni.showModal({
+                        title: '是否微信登录',
+                        content: '',
+                        showCancel: true,
+                        success:({ confirm, cancel }) => {
+                            if (confirm) {
+                                LoginIn().then(res => {
+                                    console.log(res)
+                                    this.userName = res.result.data[0].name
+                                    this.userImage = res.result.data[0].headImg
+                                })
+                            }
+                        }
+                    });
+                }
             }
         }
     }
@@ -89,8 +177,10 @@
         background-color: #00CC66;
         height: 180rpx;
         .my-userInfo{
-            margin-left: 30px;
+            margin-left: 20px;
             display: flex;
+            background-color: #00CC66;
+            border: none;
             .my-user-profile-picture{
                 height: 60px;
                 width: 60px;

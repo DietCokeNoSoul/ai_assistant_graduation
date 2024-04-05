@@ -67,6 +67,10 @@
 				{
 					"path":"generate/generate_detail",
 					"style": {}
+				},
+				{
+					"path":"login/login",
+					"style": {}
 				}
 			]
 		}

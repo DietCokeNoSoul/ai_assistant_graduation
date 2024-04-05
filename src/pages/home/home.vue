@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { checkLogin } from '../../util/checkLogin.js'
     export default{
         data(){
             return{
@@ -90,6 +91,21 @@
             })
             this.rangeLv2=this.marketingList
             uni.hideLoading()
+            // 检查登陆状态
+            if(!checkLogin()){
+                uni.showModal({
+                    title: '未登录,请登录后再使用',
+                    content: '',
+                    showCancel: true,
+                    success: ({ confirm, cancel }) => {
+                        if(confirm){
+                            uni.switchTab({
+                                url: '/pages/my/my'
+                            })
+                        }
+                    }
+                })
+            }
         },
         methods:{
             //一级选择改变 
@@ -127,6 +143,22 @@
             },
             //跳转到生成页面
             gotoGenerate(item){
+            // 检查登陆状态
+            if(!checkLogin()){
+                uni.showModal({
+                    title: '未登录,请登录后再使用',
+                    content: '',
+                    showCancel: true,
+                    success: ({ confirm, cancel }) => {
+                        if(confirm){
+                            uni.switchTab({
+                                url: '/pages/my/my'
+                            })
+                        }
+                    }
+                })
+            }
+            else{
                 switch(this.classItem){
                     case '营销类':{
                         uni.navigateTo({
@@ -158,6 +190,7 @@
                         })
                         break
                     }
+                }
                 }
             }
         }
