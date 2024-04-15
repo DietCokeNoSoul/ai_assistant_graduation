@@ -5,20 +5,13 @@
         <!-- 信息输入区域 -->
         <view class="generate-box">
             <!-- 商业计划书 -->
-            <view v-if="name==='商业计划书'">
-                <text class="generate-item-title">预测营业额</text>
+            <view>
+                <text class="generate-item-title">给小助手打个招呼或者问个问题吧</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "turnover_value" type="text" maxlength="16" @input="inputTurnover" placeholder="例:每年2000万">{{  turnover_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "preContent" type="text" maxlength="2000" placeholder="例:你好">{{  preContent }}</uni-easyinput>
                 </view>
-                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ turnover_value.length }}/16</view>
-            </view>
-            <!-- 选择区域-->
-            <view class="choose-box" v-if="name==='商业演讲'||name==='领导发言稿'">
-                <text class="choose-item-title">文章风格</text>
-                <view :style="{'margin-bottom':'30px'}">
-                    <uni-data-select v-model="style_value" :localdata="style_range" :clear="false" @change="changeStyle"></uni-data-select>
-                </view>
-            </view>             
+                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ preContent.length }}/2000</view>
+            </view>         
         </view>
         <button class="submit-btn" @click="gotoDetail">生成</button>
     </view>
@@ -28,14 +21,22 @@
     export default{
         data(){
             return{
-
+                // 聊天内容
+                preContent:'',
             }
         },
         methods:{
             //跳转到生成详情页
             gotoDetail(){
+                if(this.preContent == ''){
+                    uni.showToast({
+                        title: '请填写内容',
+                        icon: 'none'
+                    })
+                    return
+                }
                 uni.navigateTo({
-                    url:'/subpkg/generate/generate_detail'
+                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
                 })
             }
         },

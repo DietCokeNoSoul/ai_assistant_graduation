@@ -112,6 +112,8 @@
     export default{
         data(){
             return{
+                //预输入
+                preContent:'',
                 //主题
                 main_value:'',
                 //内容场景
@@ -211,9 +213,118 @@
             },
             //跳转到生成详情页
             gotoDetail(){
-                uni.navigateTo({
-                    url:'/subpkg/generate/generate_detail'
-                })
+                switch(this.name){
+                    case '口播类视频创意':{
+                        if(this.main_value===''||this.background_value===''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '视频主题：'+this.main_value+';内容场景：'+this.background_value+';内容氛围：'+this.atmosphere_range[this.atmosphere_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case 'vlog类视频脚本':{
+                        if(this.main_value===''||this.marketing_value===''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '视频主题：'+this.main_value+';营销主体：'+this.marketing_value+';内容类型：'+this.content_range[this.content_value].text+';视频风格：'+this.style_range[this.style_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '剧情类视频脚本':{
+                        if(this.main_value===''||this.marketing_value===''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '视频主题：'+this.main_value+';营销主体：'+this.marketing_value+';故事类型：'+this.story_range[this.story_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '探店类视频脚本':{
+                        if(this.main_value===''||this.brand_value===''||this.shop_value===''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '视频主题：'+this.main_value+';店铺名称：'+this.brand_value+';店铺类目：'+this.shop_value
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '带货类视频脚本':{
+                        if(this.product_value===''||this.brand_value===''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'产品：'+this.product_value+';品牌：'+this.brand_value+';文案语气：'+this.tone_range[this.tone_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                }
             }
         },
         props:{

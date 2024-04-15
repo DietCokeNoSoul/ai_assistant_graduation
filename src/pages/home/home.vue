@@ -5,7 +5,7 @@
         <!-- 选择区域 -->
         <view class="class-container">
             <!-- 选择标题 -->
-            <text class="class-title" v-if="classItem==='工具类'">请选择要使用的工具</text>
+            <text class="class-title" v-if="classItem==='工具类'">一个可以自由询问的地方</text>
             <text class="class-title" v-else>请选择要生成的类型</text>
             <!-- 一级选择列表 -->
             <view class="class-list">
@@ -21,7 +21,7 @@
         </view>
     </view>
 </template>
-
+ 
 <script>
 import { checkLogin } from '../../util/checkLogin.js'
     export default{
@@ -36,7 +36,7 @@ import { checkLogin } from '../../util/checkLogin.js'
                     {"value": 1,"text": "视频"},
                     {"value": 2,"text": "商业"},
                     {"value": 3,"text": "电商"},
-                    {"value": 4,"text": "工具"}],
+                    {"value": 4,"text": "聊天"}],
                 //二级选择表
                 rangeLv2:[],
                 //营销类
@@ -45,7 +45,7 @@ import { checkLogin } from '../../util/checkLogin.js'
                     {"value": 1,"text": "抖音推广文案"},
                     {"value": 2,"text": "微博推广文案"},
                     {"value": 3,"text": "微信推广文案"},
-                    {"value": 4,"text": "知乎文章"},
+                    {"value": 4,"text": "知乎回答"},
                     {"value": 5,"text": "品牌故事生成"},
                     {"value": 6,"text": "活动策划"}],
                 //视频类
@@ -70,18 +70,7 @@ import { checkLogin } from '../../util/checkLogin.js'
                     {"value": 3,"text": "店铺介绍"}],
                 //工具类
                 ToolList:[
-                    {"value": 0,"text": "年化利率计算器490"},
-                    {"value": 1,"text": "文字翻译"},
-                    {"value": 2,"text": "Excel公式生成393"},
-                    {"value": 3,"text": "Excel自动化脚本394"},
-                    {"value": 4,"text": "合同模版290"},
-                    {"value": 5,"text": "免责声明281"},
-                    {"value": 6,"text": "分销协议282"},
-                    {"value": 7,"text": "服务条款280"},
-                    {"value": 8,"text": "隐私协议279"},
-                    {"value": 9,"text": "工作邮件199"},
-                    {"value": 10,"text": "可行性报告150"},
-                    {"value": 11,"text": "售后服务协议151"},]
+                    {"value": 0,"text": "聊天"},]
             }
         },
         onLoad() {

@@ -9,7 +9,7 @@
         </view>
         <!-- 文本生成区域 -->
         <view class="generate-box">
-            <text>文字</text>
+            <text class="generate-text">???:{{ chatContent }}</text>
         </view>
         <!-- 生成按钮 -->
         <view class="generate-btn-box">
@@ -36,15 +36,18 @@
 </template>
 
 <script>
+import { chat } from '../../util/GPTapi.js'
 export default{
     data(){
         return{
             //需求输入
-            input_value: ''
+            input_value: '',
+            //GPT返回的内容
+            chatContent:'',
         }
     },
     onLoad() {
-
+        this.getGpt();
     },
     methods:{
         //输入需求
@@ -59,11 +62,36 @@ export default{
         generate(){
             console.log('生成')
         },
+        //获取GPT
+        getGpt() {
+            chat(this.preContent).then((res) => {
+            this.startTypingAnimation(res); // 获取到返回值后，开始打字动画
+            }).catch((error) => {
+            console.error('chat 请求失败', error);
+            });
+        },
+        //打字动画
+        startTypingAnimation(text) {
+            const typingSpeed = 20; // 打字速度，单位为毫秒
+            let index = 0;
+            const timer = setInterval(() => {
+            const typedText = text.slice(0, index + 1); // 逐步截取聊天内容
+            this.chatContent = typedText; // 更新聊天内容
+            index++;
+            if (index === text.length) {
+                clearInterval(timer); // 打字结束，清除定时器
+            }
+            }, typingSpeed);
+        },
     },
     props: {
         name: {
             type: String,
             default: 'generate_detail'
+        },
+        preContent: {
+            type: String,
+            default: ''
         }
     }
 }
@@ -103,6 +131,12 @@ export default{
             }
         }
     }
+    .generate-box{
+        background-color: #c9c9c9;
+        .generate-text{
+            white-space: pre-wrap;
+        }
+    }
     .generate-btn-box{
         margin-left: 10px;
         margin-right: 10px;
@@ -135,3 +169,4 @@ export default{
     }
 }
 </style>
+

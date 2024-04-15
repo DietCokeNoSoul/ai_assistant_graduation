@@ -79,11 +79,13 @@
                     })
                     return
                 }
+                //弹出提示框
                 uni.showModal({
                     title: '提示',
                     content: '确定提交吗？',
                     success: ({ confirm, cancel }) => {
                         if (confirm) {
+                            // 获取类型
                             let type = ''
                             if(this.radioValue === 0){
                                 type = '建议'
@@ -91,8 +93,7 @@
                             else{
                                 type = '故障'
                             }
-                            console.log(this.detail_value)
-                            console.log(this.Info_value)
+                            // 输入数据库
                             wx.cloud.callFunction({
                                 name:'problemFeedback',
                                 data:{
@@ -101,6 +102,7 @@
                                     contact: this.Info_value,
                                 },
                                 success: res => {
+                                    // 提交成功,返回my页面
                                     uni.reLaunch({
                                         url: '/pages/my/my'
                                     })

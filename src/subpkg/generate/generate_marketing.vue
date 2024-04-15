@@ -38,22 +38,22 @@
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ people_value.length }}/16</view>
             </view>
             <!-- 微博 -->
-            <view v-if="name==='微博推广文案'||name==='知乎文章'">
+            <view v-if="name==='微博推广文案'||name==='知乎回答'">
                 <text class="generate-item-title">内容场景</text>
                 <view :style="{'margin-top':'10px'}">
                     <uni-easyinput v-model= "background_value" type="text" maxlength="16" @input="inputBackground" placeholder="例:国际金融/地缘冲突">{{  background_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ background_value.length }}/16</view>
             </view>
-            <!-- 知乎文章 -->
-            <view v-if="name==='知乎文章'">
+            <!-- 知乎回答 -->
+            <view v-if="name==='知乎回答'">
                 <text class="generate-item-title">主题</text>
                 <view :style="{'margin-top':'10px'}">
                     <uni-easyinput v-model= "main_value" type="text" maxlength="30" @input="inputMain" placeholder="例:俄乌局势分析">{{  main_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ main_value.length }}/30</view>
             </view>
-            <view v-if="name==='知乎文章'">
+            <view v-if="name==='知乎回答'">
                 <text class="generate-item-title">问题描述</text>
                 <view :style="{'margin-top':'10px'}">
                     <uni-easyinput v-model= "question_value" type="text" maxlength="100" @input="inputQuestion" placeholder="例:莫斯科恐怖袭击跟俄乌局势的联系">{{  question_value }}</uni-easyinput>
@@ -126,7 +126,7 @@
                 </view>
             </view>
             <!-- 选择区域(知乎) -->
-            <view class="choose-box" v-if="name==='知乎文章'">
+            <view class="choose-box" v-if="name==='知乎回答'">
                 <text class="choose-item-title">推文口吻</text>
                 <view :style="{'margin-bottom':'30px'}">
                     <uni-data-select v-model="class_value" :localdata="class_range_zh" :clear="false" @change="changeClass"></uni-data-select>
@@ -149,6 +149,8 @@
     export default{
         data(){
             return{
+                //预输入
+                preContent:'',
                 //品牌名称
                 name_value:'',
                 //营销主体
@@ -173,7 +175,6 @@
                 count_value:'',
                 //活动目的
                 goal_value:'',
-
                 class_range:[{
                     "value": 0,
                     "text": "种草文案"
@@ -284,9 +285,163 @@
             },
             //跳转到生成详情页面
             gotoDetail(){
-                uni.navigateTo({
-                    url: '/subpkg/generate/generate_detail?name='+this.name
-                })
+                //拼接预生成内容
+                switch(this.name){
+                    case '小红书推广文案':{
+                        if(this.name_value==''||this.object_value==''||this.main_value==''||this.people_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '品牌名称：'+this.name_value+';营销主体：'+this.object_value+';主题：'+this.main_value+';目标人群：'+this.people_value+';文案语气：'+this.tone_range[this.tone_value].text+';文案类型：'+this.class_range[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '抖音推广文案':{
+                        if(this.name_value==''||this.object_value==''||this.main_value==''||this.people_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '品牌名称：'+this.name_value+';营销主体：'+this.object_value+';主题：'+this.main_value+';目标人群：'+this.people_value+';文案语气：'+this.tone_range[this.tone_value].text+';文案类型：'+this.class_range[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '微博推广文案':{
+                        if(this.name_value==''||this.object_value==''||this.main_value==''||this.background_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '品牌名称：'+this.name_value+';营销主体：'+this.object_value+';主题：'+this.main_value+';内容场景'+this.background_value+';推文口吻(发送该推文的主体)：'+this.class_range_wb[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '微信推广文案':{
+                        if(this.name_value==''||this.object_value==''||this.main_value==''||this.people_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '品牌名称：'+this.name_value+';营销主体：'+this.object_value+';主题：'+this.main_value+';目标人群：'+this.people_value+';文案语气：'+this.tone_range[this.tone_value].text+';文案类型：'+this.class_range[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '知乎回答':{
+                        if(this.background_value=='' || this.main_value==''||this.question_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content + '内容场景'+this.background_value+';主题：'+this.main_value+';问题描述：'+this.question_value+';推文口吻：'+this.class_range_zh[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '品牌故事生成':{
+                        if(this.name_value=='' || this.business_value=='' || this.idea_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'品牌名称：'+this.name_value + ';行业：'+this.business_value+';品牌理念：'+this.idea_value
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '活动策划':{
+                        if(this.name_value=='' || this.item_value=='' || this.main_value=='' || this.count_value=='' || this.goal_value==''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'品牌名称：'+this.name_value + ';经营类目：'+this.item_value+';活动主题：'+this.main_value+';参与人数：'+this.count_value+';活动目的：'+this.goal_value+';活动类型：'+this.class_range_hd[this.class_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                }
             }
         },
         props:{

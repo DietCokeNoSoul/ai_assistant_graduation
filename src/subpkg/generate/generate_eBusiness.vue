@@ -165,11 +165,98 @@
             },
             //生成
             gotoDetail(){
-                uni.navigateTo({
-                    url: '/subpkg/generate/generate_detail'
-                })
+                switch(this.name){
+                    case '商品描述':{
+                        if(this.name_value === ''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'商品名称：'+this.name_value+';原商品描述：'+this.detail_value+';描述重点：'+this.key_range[this.key_value].text+';文案风格：'+this.style_range[this.style_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '好评批量生成':{
+                        if(this.name_value === '' || this.point_value === ''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'商品名称：'+this.name_value+';好评重点：'+this.point_value+';文案风格：'+this.style_range[this.style_value].text+';字数要求：'+this.count_range[this.count_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '专业回复评论':{
+                        if(this.comment_value === '' || this.compensation_value === ''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'商品名称：'+this.name_value +';用户评论：'+this.comment_value+';补偿机制：'+this.compensation_value
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    }
+                    case '店铺介绍':{
+                        if(this.brand_value === '' || this.business_value === ''){
+                            uni.showToast({
+                                title: '请填写完整信息',
+                                icon: 'none'
+                            });
+                            return
+                        }
+                        //调用云函数获取模板
+                        wx.cloud.callFunction({
+                            name:'getModel',
+                            data:{
+                                name:this.name
+                            },
+                            success:res=>{
+                                this.preContent = res.result.data[0].content +'品牌名称：'+this.brand_value +';主营业务：'+this.business_value+';文案风格：'+this.style_range[this.style_value].text
+                                uni.navigateTo({
+                                    url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
+                                })
+                            }
+                        })
+                    
+                    }
+                }
             }
-
         },
         props:{
             name:{
