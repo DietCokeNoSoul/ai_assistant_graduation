@@ -69,6 +69,7 @@
     "@dcloudio/uni-stat": "^2.0.2-3090920231225001",
     "@dcloudio/uni-ui": "^1.5.2",
     "@vue/shared": "^3.0.0",
+    "axios": "^1.6.8",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.8.3",
     "flyio": "^0.6.2",
