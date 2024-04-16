@@ -8,79 +8,145 @@
             </view>
         </view>
         <!-- 文本生成区域 -->
-        <view class="generate-box">
-            <text class="generate-text">???:{{ chatContent }}</text>
-        </view>
+        <scroll-view class="generate_box" :style="{height:scrollViewHeight+'px'}" :scroll-y="true" :scroll-top="scrollTop" :scroll-with-animation="true">
+            <view id="scroll-view-content">
+                <view :class="{ 'history-res-box': index % 2 === 0, 'history-text-box': index % 2 !== 0 }" v-for="(item,index) of chatArray" :key="index">
+                    <text user-select="true">{{ item }}</text>
+                </view>
+            </view>
+        </scroll-view>
         <!-- 生成按钮 -->
         <view class="generate-btn-box">
-            <button class="generate-btn"  @click="generate">
+            <button class="generate-btn"  @click="re_generate">
                 <uni-icons type="refreshempty" size="20"></uni-icons>
                 <view class="btn-text-box">
                     <text :style="{'color':'balck','font-size':'30rpx','line-height':'30rpx','margin-top':'15rpx'}">重新生成</text>
                     <text :style="{'color':'#797979','font-size':'20rpx','margin-top':'0px'}">结果不满意时点击我</text>
                 </view>
             </button>
-            <button class="generate-btn"  @click="generate">
+            <button class="generate-btn"  @click="con_generate">
                 <uni-icons type="redo-filled" size="20"></uni-icons>
                 <view class="btn-text-box">
                     <text :style="{'color':'balck','font-size':'30rpx','line-height':'30rpx','margin-top':'15rpx'}">继续生成</text>
-                    <text :style="{'color':'#797979','font-size':'20rpx','margin-top':'0px'}">生成中断时点击我</text>
+                    <text :style="{'color':'#797979','font-size':'20rpx','margin-top':'0px'}">继续提问点击我</text>
                 </view>
             </button>
         </view>
         <!-- 需求输入区域 -->
         <view class="input-box">
-            <textarea type="text" :value="input_value" maxlength="-1" @confirm="confirm" :auto-height="true" show-confirm-bar="true" placeholder="请描述您的需求" />
+            <textarea type="text" v-model="input_value" maxlength="-1" @confirm="confirm" :auto-height="true" show-confirm-bar="true" placeholder="请描述您的需求" />
         </view>
     </view>
 </template>
 
 <script>
-import { chat } from '../../util/GPTapi.js'
+import { chat } from '../../util/api.js'
 export default{
     data(){
         return{
+            scrollTop:0,//滚动条位置
+            scrollViewHeight:300,//滚动视图的高度
             //需求输入
             input_value: '',
-            //GPT返回的内容
+            //当前GPT返回的内容
             chatContent:'',
+            //聊天历史
+            chatArray:[],
+            //输入message
+            message:[
+                {"role": 'system', "content": 'You are a helpful assistant.'}, 
+                {"role": 'user', "content": this.preContent},
+            ]
         }
     },
     onLoad() {
         this.getGpt();
     },
     methods:{
+        //滚动到底部
+        scrollToBottom(){
+            this.$nextTick(()=>{
+                uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res)=>{
+                    let top = res.height-this.scrollViewHeight;
+                    if(top>0){
+                        this.scrollTop=top;
+                    }
+                }).exec()
+            })
+        },
         //输入需求
         confirm(){
-            console.log(this.input_value)
+            if(this.input_value==''){
+                uni.showToast({
+                    title: '请输入内容',
+                    icon: 'none'
+                });
+                return;
+            }
+            else{
+                this.chatArray.push(this.input_value);
+                this.message.push({"role": "user", "content": this.input_value});//保存对话
+                this.getGpt();
+                this.input_value='';//清空输入框
+                this.scrollToBottom();
+            }
         },
         //返回首页
         gotoHome(){
             uni.switchTab({ url: '/pages/home/home' })
         },
-        //生成
-        generate(){
-            console.log('生成')
+        //重新生成
+        re_generate(){
+            this.chatArray.pop();//删除最后一个元素
+            this.message.push({"role": "user", "content": '能重新提供解答吗?'});//保存对话
+            this.getGpt();
+            this.input_value='';//清空输入框
+        },
+        //继续生成
+        con_generate(){
+            if(this.input_value==''){
+                uni.showToast({
+                    title: '请输入内容',
+                    icon: 'none'
+                });
+                return;
+            }
+            else{
+                this.chatArray.push(this.input_value);
+                this.message.push({"role": "user", "content": this.input_value});//保存对话
+                this.getGpt();
+                this.input_value='';//清空输入框
+                this.scrollToBottom();
+            }
         },
         //获取GPT
         getGpt() {
-            chat(this.preContent).then((res) => {
+            uni.showLoading({
+                title: '加载中'
+            });
+            chat(this.message).then((res) => {
+            this.chatArray.push('');
             this.startTypingAnimation(res); // 获取到返回值后，开始打字动画
+            this.chatContent=res;
+            this.message.push({"role": "assistant", "content": res});//保存对话
+            uni.hideLoading()
             }).catch((error) => {
             console.error('chat 请求失败', error);
+            uni.hideLoading()
             });
         },
-        //打字动画
         startTypingAnimation(text) {
-            const typingSpeed = 20; // 打字速度，单位为毫秒
+            const typingSpeed = 20;
             let index = 0;
+            let typedText = '';
             const timer = setInterval(() => {
-            const typedText = text.slice(0, index + 1); // 逐步截取聊天内容
-            this.chatContent = typedText; // 更新聊天内容
-            index++;
-            if (index === text.length) {
-                clearInterval(timer); // 打字结束，清除定时器
-            }
+                typedText = text.slice(0, index + 1);
+                this.$set(this.chatArray, this.chatArray.length - 1, typedText);
+                index++;
+                this.scrollToBottom(); // 在文字打印完成后触发滚动函数
+                if (index === text.length) {
+                    clearInterval(timer);
+                }
             }, typingSpeed);
         },
     },
@@ -93,7 +159,7 @@ export default{
             type: String,
             default: ''
         }
-    }
+    },
 }
 </script>
 
@@ -111,7 +177,7 @@ export default{
         .generate-title{
             margin-top: 10px;
             margin-left: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-size: 50rpx;
             font-weight: bold;
         }
@@ -131,16 +197,40 @@ export default{
             }
         }
     }
-    .generate-box{
-        background-color: #c9c9c9;
-        .generate-text{
-            white-space: pre-wrap;
+    .generate_box{
+        flex: 1; // 自动填充剩余空间
+        overflow-y: auto; /* 垂直滚动条 */
+        .history-res-box{
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+        margin-right: 20px;
+        margin-top: 5px;
+        border-radius: 3px;
+        padding: 5px 5px;
+        background-color: #d1d1d1;
+            .generate-text{
+                white-space: pre-wrap;
+            }
+        }
+        .history-text-box{
+            display: flex;
+            flex-direction: column;
+            margin-left: 40px;
+            margin-right: 5px;
+            margin-top: 5px;
+            border-radius: 3px;
+            padding: 5px 5px;   
+            background-color: #ffffff;
+                .generate-text{
+                    white-space: pre-wrap;
+                }
         }
     }
     .generate-btn-box{
         margin-left: 10px;
         margin-right: 10px;
-        margin-top: auto;
+        margin-top: 10px;
         z-index: 999;
         display: flex;
         justify-content: space-between;

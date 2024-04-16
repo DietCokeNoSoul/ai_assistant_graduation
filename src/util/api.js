@@ -1,4 +1,4 @@
-async function chat(prompt) {
+async function chat(message) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: 'https://api.gptgod.online/v1/chat/completions',
@@ -9,10 +9,7 @@ async function chat(prompt) {
       },
       data: {
         model: 'gpt-3.5-turbo-16k',
-        messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
-          { role: 'user', content: prompt },
-        ],
+        messages: message
       },
       success: function(res) {
         resolve(res.data.choices[0].message.content); // 流式输出结束，resolve Promise

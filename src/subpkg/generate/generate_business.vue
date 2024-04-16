@@ -170,6 +170,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '商业演讲':{
                         if(this.main_value==''||this.key_value==''){
@@ -192,6 +193,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '领导发言稿':{
                         if(this.main_value==''||this.key_value==''){
@@ -214,6 +216,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '新闻通稿':{
                         if(this.main_value==''||this.key_value==''){
@@ -236,7 +239,7 @@
                                 })
                             }
                         })
-                    
+                        break;
                     }
                     case '品牌策划':{
                         if(this.brand_value==''||this.project_value==''||this.idea_value==''){
@@ -259,7 +262,7 @@
                                 })
                             }
                         })
-                    
+                        break;
                     }
                 }
             }

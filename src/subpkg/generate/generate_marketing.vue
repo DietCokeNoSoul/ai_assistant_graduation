@@ -308,6 +308,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '抖音推广文案':{
                         if(this.name_value==''||this.object_value==''||this.main_value==''||this.people_value==''){
@@ -330,6 +331,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '微博推广文案':{
                         if(this.name_value==''||this.object_value==''||this.main_value==''||this.background_value==''){
@@ -352,6 +354,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '微信推广文案':{
                         if(this.name_value==''||this.object_value==''||this.main_value==''||this.people_value==''){
@@ -374,6 +377,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '知乎回答':{
                         if(this.background_value=='' || this.main_value==''||this.question_value==''){
@@ -396,6 +400,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '品牌故事生成':{
                         if(this.name_value=='' || this.business_value=='' || this.idea_value==''){
@@ -418,6 +423,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '活动策划':{
                         if(this.name_value=='' || this.item_value=='' || this.main_value=='' || this.count_value=='' || this.goal_value==''){
@@ -440,6 +446,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                 }
             }

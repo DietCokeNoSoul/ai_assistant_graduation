@@ -8,7 +8,7 @@
         <!-- 关于我们 -->
         <view v-else-if="class_name==='关于我们'" class="app-detail">
             <text>这是一个文成生成式小程序</text>
-            <text>使用接口:GPT3.5</text>
+            <text>使用接口:大语言</text>
         </view>
         <!-- 反馈问题 -->
         <view v-else class="submit-bug">
@@ -20,10 +20,6 @@
                 <!-- 输入内容 -->
                 <uni-easyinput v-model="detail_value" type="textarea" placeholder="请输入内容" maxlength="200" @input="inputDetail"/>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'30px',' text-align': 'right'}"> 字数:{{ detailLength }}/200</view>
-                <text class="submit-bug-text">联系方式</text>
-                <!-- 输入联系方式 -->
-                <uni-easyinput v-model="Info_value" type="text" placeholder="请输入内容" maxlength="30" @input="inputInfo"/>
-                <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'30px',' text-align': 'right'}"> 字数:{{ infoLength }}/30</view>
             </view>
             <button class="submit-bug-btn" @click="submitForm">提交</button>
         </view>
@@ -46,10 +42,8 @@
                 ],
                 //输入框内容
                 detail_value:'',
-                Info_value:'',
                 //输入框字数
                 detailLength:0,
-                infoLength:0,
             }
         },
         onLoad() {
@@ -99,7 +93,6 @@
                                 data:{
                                     type: type,
                                     context: this.detail_value,
-                                    contact: this.Info_value,
                                 },
                                 success: res => {
                                     // 提交成功,返回my页面

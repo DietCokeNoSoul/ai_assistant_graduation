@@ -235,6 +235,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case 'vlog类视频脚本':{
                         if(this.main_value===''||this.marketing_value===''){
@@ -257,6 +258,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '剧情类视频脚本':{
                         if(this.main_value===''||this.marketing_value===''){
@@ -279,6 +281,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '探店类视频脚本':{
                         if(this.main_value===''||this.brand_value===''||this.shop_value===''){
@@ -301,6 +304,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '带货类视频脚本':{
                         if(this.product_value===''||this.brand_value===''){
@@ -323,6 +327,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                 }
             }

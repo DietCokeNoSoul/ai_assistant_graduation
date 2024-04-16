@@ -187,6 +187,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '好评批量生成':{
                         if(this.name_value === '' || this.point_value === ''){
@@ -209,6 +210,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '专业回复评论':{
                         if(this.comment_value === '' || this.compensation_value === ''){
@@ -231,6 +233,7 @@
                                 })
                             }
                         })
+                        break;
                     }
                     case '店铺介绍':{
                         if(this.brand_value === '' || this.business_value === ''){
@@ -253,7 +256,7 @@
                                 })
                             }
                         })
-                    
+                        break;
                     }
                 }
             }
