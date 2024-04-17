@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
     data:{
       _openid:event.openid,
       name: event.name,
-      headImg: event.headImg,
+      headImg: event.fileID,
     }
   })
 }

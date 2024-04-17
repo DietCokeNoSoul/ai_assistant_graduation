@@ -8,7 +8,7 @@
             <view v-if="name==='商品描述'||name==='好评批量生成'||name==='专业回复评论'">
                 <text class="generate-item-title" v-if="name==='商品描述'||name==='好评批量生成'||name==='专业回复评论'">商品名称</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "name_value" type="text" maxlength="30" @input="inputName" placeholder="例:拯救者y9000p游戏本">{{  name_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "name_value" type="text" maxlength="30"  placeholder="例:拯救者y9000p游戏本">{{  name_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ name_value.length }}/30</view>
             </view>
@@ -16,7 +16,7 @@
             <view v-if="name==='商品描述'">
                 <text class="generate-item-title" v-if="name==='商品描述'">原商品描述</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "detail_value" type="text" maxlength="30" @input="inputDetail" placeholder="例:复制粘贴原来的描述(没有则填 无)">{{  detail_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "detail_value" type="text" maxlength="30"  placeholder="例:复制粘贴原来的描述(没有则填 无)">{{  detail_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ detail_value.length }}/30</view>
             </view>
@@ -24,7 +24,7 @@
             <view v-if="name==='好评批量生成'">
                 <text class="generate-item-title" v-if="name==='好评批量生成'">好评重点</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "point_value" type="text" maxlength="30" @input="inputPoint" placeholder="例:性能超好,能流畅游玩各种3A游戏大作">{{  point_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "point_value" type="text" maxlength="30" placeholder="例:性能超好,能流畅游玩各种3A游戏大作">{{  point_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ point_value.length }}/30</view>
             </view>
@@ -32,7 +32,7 @@
             <view v-if="name==='专业回复评论'">
                 <text class="generate-item-title">用户评论</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "comment_value" type="text" maxlength="500" @input="inputComment" placeholder="粘贴用户评论">{{  comment_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "comment_value" type="text" maxlength="500"  placeholder="粘贴用户评论">{{  comment_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ comment_value.length }}/500</view>
             </view>
@@ -40,7 +40,7 @@
             <view v-if="name==='专业回复评论'">
                 <text class="generate-item-title">补偿机制</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "compensation_value" type="text" maxlength="100" @input="inputCompensation" placeholder="差评触发,没有则填无,例:20元无门槛券">{{  compensation_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "compensation_value" type="text" maxlength="100"  placeholder="差评触发,没有则填无,例:20元无门槛券">{{  compensation_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ compensation_value.length }}/100</view>
             </view>
@@ -48,7 +48,7 @@
             <view v-if="name==='店铺介绍'">
                 <text class="generate-item-title">品牌名称</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "brand_value" type="text" maxlength="30" @input="inputBrand" placeholder="例:拯救者">{{  brand_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "brand_value" type="text" maxlength="30"  placeholder="例:拯救者">{{  brand_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ brand_value.length }}/30</view>
             </view>
@@ -56,7 +56,7 @@
             <view v-if="name==='店铺介绍'">
                 <text class="generate-item-title">主营业务</text>
                 <view :style="{'margin-top':'10px'}">
-                    <uni-easyinput v-model= "business_value" type="text" maxlength="30" @input="inputBusiness" placeholder="例:高性能笔记本电脑">{{  business_value }}</uni-easyinput>
+                    <uni-easyinput v-model= "business_value" type="text" maxlength="30"  placeholder="例:高性能笔记本电脑">{{  business_value }}</uni-easyinput>
                 </view>
                 <view :style="{'color':'#bababa','font-size':'13px','margin-bottom':'20px',' text-align': 'right'}"> 字数:{{ business_value.length }}/30</view>
             </view>
@@ -131,38 +131,6 @@
             }
         },
         methods:{
-            //商品名称
-            inputName(e){
-
-            },
-            //商品描述
-            inputDetail(e){
-
-            },
-            //描述重点
-            changeKey(e){
-
-            },
-            //好评重点
-            inputPoint(e){
-
-            },
-            //文案风格
-            changeStyle(e){
-
-            },
-            //字数要求
-            changeCount(e){
-
-            },
-            //用户评论
-            inputComment(e){
-
-            },
-            //补偿机制
-            inputCompensation(e){
-
-            },
             //生成
             gotoDetail(){
                 switch(this.name){

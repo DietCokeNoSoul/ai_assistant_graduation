@@ -426,7 +426,7 @@
                         break;
                     }
                     case '活动策划':{
-                        if(this.name_value=='' || this.item_value=='' || this.main_value=='' || this.count_value=='' || this.goal_value==''){
+                        if(this.item_value=='' || this.main_value=='' || this.count_value=='' || this.goal_value==''){
                             uni.showToast({
                                 title: '请填写完整信息',
                                 icon: 'none'
@@ -440,7 +440,7 @@
                                 name:this.name
                             },
                             success:res=>{
-                                this.preContent = res.result.data[0].content +'品牌名称：'+this.name_value + ';经营类目：'+this.item_value+';活动主题：'+this.main_value+';参与人数：'+this.count_value+';活动目的：'+this.goal_value+';活动类型：'+this.class_range_hd[this.class_value].text
+                                this.preContent = res.result.data[0].content + '经营类目：'+this.item_value+';活动主题：'+this.main_value+';参与人数：'+this.count_value+';活动目的：'+this.goal_value+';活动类型：'+this.class_range_hd[this.class_value].text
                                 uni.navigateTo({
                                     url: '/subpkg/generate/generate_detail?name='+this.name+'&preContent='+this.preContent
                                 })

@@ -29,6 +29,7 @@
                 // 用户昵称
                 name:"",
                 avatarUrl: "/static/profile-picture.png",
+                fileID: ''
             }
         },
         methods:{
@@ -56,26 +57,36 @@
                     showCancel: true,
                     success: ({ confirm, cancel }) => {
                         if(confirm){
-                            // 输入数据库
-                            wx.cloud.callFunction({
-                                name: 'register',
-                                data: {
-                                    openid: this.openid,
-                                    name: this.name,
-                                    headImg: this.avatarUrl
-                                }
-                            })
-                            const expiredTime = Date.now() + 24 * 3600 * 1000; // 登录状态失效时间为一天后
-                            // 将登录状态保存到本地缓存
-                            uni.setStorageSync('loginStatus', {
-                                _openid: this.openid,
-                                expiredTime: expiredTime
-                            });
-                            // 保存用户信息到本地缓存
-                            uni.setStorageSync('userName', this.name);
-                            uni.setStorageSync('userImage', this.avatarUrl);
-                            uni.reLaunch({
-                                 url: '/pages/my/my?name='+this.name+'&headImg='+this.avatarUrl 
+                            // 上传头像
+                            wx.cloud.uploadFile({
+                            cloudPath: this.name, // 上传至云端的路径
+                            filePath: this.avatarUrl, // 小程序临时文件路径
+                            success: res => {
+                                // 返回文件 ID
+                                this.fileID=res.fileID
+                                // 输入数据库
+                                wx.cloud.callFunction({
+                                    name: 'register',
+                                    data: {
+                                        openid: this.openid,
+                                        name: this.name,
+                                        fileID:this.fileID
+                                    }
+                                })
+                                const expiredTime = Date.now() + 24 * 3600 * 1000; // 登录状态失效时间为一天后
+                                // 将登录状态保存到本地缓存
+                                uni.setStorageSync('loginStatus', {
+                                    _openid: this.openid,
+                                    expiredTime: expiredTime
+                                });
+                                // 保存用户信息到本地缓存
+                                uni.setStorageSync('userName', this.name);
+                                uni.setStorageSync('userImage', this.avatarUrl);
+                                uni.reLaunch({
+                                    url: '/pages/my/my?name='+this.name+'&headImg='+this.avatarUrl 
+                                })
+                            },
+                            fail: console.error
                             })
                         }
                     }

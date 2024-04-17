@@ -1,8 +1,13 @@
 <template>
     <view class="generate-container">
         <view class="title-box">
+            <!-- 头像 -->
+            <view class="my-user-profile-picture" @click="gotoMy">
+                <image class="my-user-image" :src="userImage"></image>
+            </view>
             <!-- 大标题 -->
             <text class="generate-title">{{ name }}</text>
+            <!-- 返回首页 -->
             <view class="home-btn">
                 <image class="home-img" src="/static/tb/home-a.png" mode="widthFix" @click="gotoHome"></image>
             </view>
@@ -11,7 +16,8 @@
         <scroll-view class="generate_box" :style="{height:scrollViewHeight+'px'}" :scroll-y="true" :scroll-top="scrollTop" :scroll-with-animation="true">
             <view id="scroll-view-content">
                 <view :class="{ 'history-res-box': index % 2 === 0, 'history-text-box': index % 2 !== 0 }" v-for="(item,index) of chatArray" :key="index">
-                    <text user-select="true">{{ item }}</text>
+                    <text user-select="true">
+                        {{ item }}</text>
                 </view>
             </view>
         </scroll-view>
@@ -40,10 +46,12 @@
 </template>
 
 <script>
-import { chat } from '../../util/api.js'
+// import { chat } from '../../util/api.js'
 export default{
     data(){
         return{
+            //用户头像
+            userImage:'../../static/profile-picture.png',
             scrollTop:0,//滚动条位置
             scrollViewHeight:300,//滚动视图的高度
             //需求输入
@@ -60,9 +68,14 @@ export default{
         }
     },
     onLoad() {
+        this.userImage = uni.getStorageSync('userImage');
         this.getGpt();
     },
     methods:{
+        //
+        gotoMy(){
+            uni.switchTab({ url: '/pages/my/my' })
+        },
         //滚动到底部
         scrollToBottom(){
             this.$nextTick(()=>{
@@ -124,16 +137,29 @@ export default{
             uni.showLoading({
                 title: '加载中'
             });
-            chat(this.message).then((res) => {
-            this.chatArray.push('');
-            this.startTypingAnimation(res); // 获取到返回值后，开始打字动画
-            this.chatContent=res;
-            this.message.push({"role": "assistant", "content": res});//保存对话
-            uni.hideLoading()
-            }).catch((error) => {
-            console.error('chat 请求失败', error);
-            uni.hideLoading()
-            });
+            wx.cloud.callFunction({
+                name: 'getApi',
+                data:{
+                    message:this.message
+                },
+                success:res=>{
+                    let content=res.result.choices[0].message.content
+                    this.chatArray.push('');
+                    this.startTypingAnimation(content); // 获取到返回值后，开始打字动画
+                    this.chatContent=content;
+                    this.message.push({"role": "assistant", "content": content});//保存对话
+                    uni.hideLoading()
+                },
+                fail:err=>{
+                    uni.hideLoading()
+                    console.error('getApi 请求失败', err);
+                    uni.showToast({
+                        title: '请求失败',
+                        icon: 'none'
+                    });
+                    
+                }
+            })
         },
         startTypingAnimation(text) {
             const typingSpeed = 20;
@@ -176,10 +202,22 @@ export default{
         justify-content: space-between;
         .generate-title{
             margin-top: 10px;
-            margin-left: 20px;
             margin-bottom: 10px;
             font-size: 50rpx;
             font-weight: bold;
+        }
+        .my-user-profile-picture{
+            height: 40px;
+            width: 40px;
+            border-radius: 15px;
+            margin-top: 5px;
+            margin-left: 10px;
+            overflow: hidden;
+            .my-user-image{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
         .home-btn{
             border: 1px solid #b5b5b5;

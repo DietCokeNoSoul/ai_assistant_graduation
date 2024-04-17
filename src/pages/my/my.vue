@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { onShow } from '@dcloudio/uni-app'
 import { checkLogin } from '../../util/checkLogin.js'
 import { LoginIn } from '../../util/LoginIn.js'
     export default{
@@ -54,13 +55,16 @@ import { LoginIn } from '../../util/LoginIn.js'
                     {name: '反馈问题'}
                 ],
                 // 用户头像
-                userImage:"/static/profile-picture.png",
+                userImage:"../../static/profile-picture.png",
                 // 用户昵称
                 userName:"未登录",
                 // 用户OPENID
                 openid:""
             }
         },
+        onShow(){
+            this.userImage = uni.getStorageSync('userImage')
+        },  
         onLoad(option) {
             // 检查登录状态
             if(checkLogin()){//已登录
@@ -77,10 +81,17 @@ import { LoginIn } from '../../util/LoginIn.js'
                     },
                     complete: userInfo => {
                         this.userName = userInfo.result.data[0].name
-                        this.userImage = userInfo.result.data[0].headImg
-                        // 保存用户信息到本地缓存
-                        uni.setStorageSync('userName', this.userName);
-                        uni.setStorageSync('userImage', this.userImage);
+                        wx.cloud.downloadFile({
+                            fileID: userInfo.result.data[0].headImg, // 文件 ID
+                            success: res => {
+                                // 返回临时文件路径
+                                this.userImage=res.tempFilePath
+                                // 保存用户信息到本地缓存
+                                uni.setStorageSync('userName', this.userName);
+                                uni.setStorageSync('userImage', this.userImage);
+                            },
+                            fail: console.error
+                        })
                     }
                 })
                 uni.hideLoading() 
@@ -93,12 +104,18 @@ import { LoginIn } from '../../util/LoginIn.js'
                     success:({ confirm, cancel }) => {
                         if (confirm) {
                             LoginIn().then(res => {
-                                console.log(res)
                                 this.userName = res.result.data[0].name
-                                this.userImage = res.result.data[0].headImg
-                                // 保存用户信息到本地缓存
-                                uni.setStorageSync('userName', this.userName);
-                                uni.setStorageSync('userImage', this.userImage);
+                                wx.cloud.downloadFile({
+                                    fileID: res.result.data[0].headImg, // 文件 ID
+                                    success: res => {
+                                        // 返回临时文件路径
+                                        this.userImage=res.tempFilePath
+                                        // 保存用户信息到本地缓存
+                                        uni.setStorageSync('userName', this.userName);
+                                        uni.setStorageSync('userImage', this.userImage);
+                                    },
+                                fail: console.error
+                            })
                             })
                         }
                     }

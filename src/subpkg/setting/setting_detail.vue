@@ -51,7 +51,6 @@
                 }
                 const changeInfo = this.props_value
                 const setclass= this.settingClass
-                console.log(changeInfo)
                 uni.showModal({
                     title: '提示',
                     content: '确定修改吗？',
@@ -59,6 +58,7 @@
                         if (res.confirm) {
                             // 修改数据库
                             const openid = uni.getStorageSync('loginStatus')._openid
+                            // 修改昵称
                             if(setclass === '昵称'){
                                 wx.cloud.callFunction({
                                     name: 'setName',
@@ -76,22 +76,49 @@
                                 // 修改本地缓存
                                 uni.setStorageSync('userName', changeInfo)
                             }
+                            // 修改头像
                             else{
-                            wx.cloud.callFunction({
-                                name: 'setImage',
-                                data: {
-                                    _openid:openid,
-                                    userImage: changeInfo
-                                },
-                                success: res => {
-                                    console.log('修改成功', res)
-                                },
-                                fail : err => {
-                                    console.log('修改失败', err)
-                                }
-                            })
                                 // 修改本地缓存
                                 uni.setStorageSync('userImage', changeInfo)
+                                // 删除原有图片
+                                wx.cloud.callFunction({
+                                    name: 'getUserInfo',
+                                    data: {
+                                        _openid: openid
+                                    },
+                                    complete: userInfo => {
+                                        wx.cloud.deleteFile({
+                                            fileList: [userInfo.result.data[0].headImg],
+                                            success: res => {
+                                                // handle success
+                                                console.log('删除成功', res)
+                                                // 上传新图片
+                                                wx.cloud.uploadFile({
+                                                    cloudPath: userInfo.result.data[0].name, // 上传至云端的路径
+                                                    filePath: changeInfo, // 小程序临时文件路径
+                                                    success: res => {
+                                                        // 返回文件 ID
+                                                        console.log('上传成功', res.fileID)
+                                                        wx.cloud.callFunction({
+                                                            name: 'setImage',
+                                                            data: {
+                                                                _openid:openid,
+                                                                userImage: res.fileID
+                                                            },
+                                                            success: res => {
+                                                                console.log('修改成功', res)
+                                                            },
+                                                            fail : err => {
+                                                                console.log('修改失败', err)
+                                                            }
+                                                        })
+                                                    },
+                                                })
+                                            },
+                                            fail: console.error
+                                        })
+                                    }
+                                })
                             }
                             uni.reLaunch({
                                 url: '/subpkg/setting/setting'
