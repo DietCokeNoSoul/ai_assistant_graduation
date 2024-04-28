@@ -26,5 +26,3 @@ cnpm install sass-loader@14.1.1 --save-dev
 ### 安装uni-ui
 [npm i @dcloudio/uni-ui](https://uniapp.dcloud.net.cn/component/uniui/quickstart.html)
 
-### AppSecret
-9de8ca7c423e43114e68e96d30c6c2fc
