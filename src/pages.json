@@ -14,7 +14,7 @@
 		{ 
 			"path": "pages/my/my",
 			"style": {
-				"navigationBarBackgroundColor": "#00CC66",
+				"navigationBarBackgroundColor": "#393939",
 				"navigationBarTextStyle": "white"
 			}
 		}
@@ -46,21 +46,21 @@
 				{
 					"path":"menu_detail/menu_detail",
 					"style": {
-						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarBackgroundColor": "#393939",
 						"navigationBarTextStyle": "white"
 					}
 				},
 				{
 					"path":"setting/setting",
 					"style": {
-						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarBackgroundColor": "#393939",
 						"navigationBarTextStyle": "white"
 					}
 				},
 				{
 					"path":"setting/setting_detail",
 					"style": {
-						"navigationBarBackgroundColor": "#00CC66",
+						"navigationBarBackgroundColor": "#393939",
 						"navigationBarTextStyle": "white"
 					}
 				},
@@ -76,7 +76,7 @@
 		}
 	],
 	"tabBar": {
-		"selectedColor":"#00CC66",
+		"selectedColor":"#1a131f8d",
 		"list": [
 			{
 				"pagePath": "pages/home/home",
@@ -95,7 +95,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "张怡栗子铺",
+		"navigationBarTitleText": "营销小助手",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

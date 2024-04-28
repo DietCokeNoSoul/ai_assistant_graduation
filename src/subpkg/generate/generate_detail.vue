@@ -16,8 +16,7 @@
         <scroll-view class="generate_box" :style="{height:scrollViewHeight+'px'}" :scroll-y="true" :scroll-top="scrollTop" :scroll-with-animation="true">
             <view id="scroll-view-content">
                 <view :class="{ 'history-res-box': index % 2 === 0, 'history-text-box': index % 2 !== 0 }" v-for="(item,index) of chatArray" :key="index">
-                    <text user-select="true">
-                        {{ item }}</text>
+                    <text user-select="true">{{ item }}</text>
                 </view>
             </view>
         </scroll-view>
@@ -46,7 +45,6 @@
 </template>
 
 <script>
-// import { chat } from '../../util/api.js'
 export default{
     data(){
         return{
@@ -132,49 +130,78 @@ export default{
                 this.scrollToBottom();
             }
         },
+        //聊天
+        async chat() {
+            const requestTask = uni.request({
+                url: 'https://api.gptgod.online/v1/chat/completions',
+                method: 'POST',
+                header: {
+                    'Authorization': 'Bearer sk-zVebGF3n3Ajjb2UG4sub0KPpwjvUsLED59irGqTlD4R7qRQ8',
+                    "Content-Type": "application/json"
+                },
+                enableChunked: true,  // 配置这里
+                data: {
+                    model: 'gpt-3.5-turbo-16k',
+                    messages: this.message,
+                    stream: true,
+                },
+                // 这里监听请求成功，接收完整数据
+                success: response => {
+                    this.message.push({"role": "assistant", "content": this.chatContent});//保存对话
+                    console.log("接收完毕")
+                },
+                fail: error => {}
+            });
+            // 这里监听消息头
+            requestTask.onHeadersReceived(res => {
+                this.chatArray.push('');//添加一个空元素
+                console.log("开始接收流数据");
+            });
+            let combinedContent = ''; // 初始化一个变量用于存储拼接后的内容
+            // 这里监听消息
+            requestTask.onChunkReceived(res => {
+                const uint8Array = new Uint8Array(res.data);
+                let text = String.fromCharCode.apply(null, uint8Array);
+                text = decodeURIComponent(escape(text));
+                // console.log(text);
+                const chunks = text.split('\n'); // 将数据块按行拆分
+                chunks.forEach(chunk => {
+                    const match = chunk.match(/"delta":{"content":"([^"]+)"/); // 使用正则表达式匹配 "delta":{"content":"..."} 部分
+                    if (match) {
+                        const content = match[1]; // 获取匹配到的内容
+                        combinedContent += content; // 将匹配到的内容拼接到 combinedContent 中
+                        combinedContent = combinedContent.replace(/\\n/g, '\n');//替换换行符
+                    }
+                });
+                // console.log(combinedContent); // 每次拼接后都打印一次拼接后的内容
+                this.chatContent = combinedContent; // 将拼接后的内容赋值给 chatContent
+                this.chatArray[this.chatArray.length - 1] = combinedContent; // 将拼接后的内容赋值给 chatArray 的最后一个元素
+                this.scrollToBottom(); // 在文字打印完成后触发滚动函数
+            });
+        },
         //获取GPT
         getGpt() {
             uni.showLoading({
                 title: '加载中'
             });
-            wx.cloud.callFunction({
-                name: 'getApi',
-                data:{
-                    message:this.message
-                },
-                success:res=>{
-                    let content=res.result.choices[0].message.content
-                    this.chatArray.push('');
-                    this.startTypingAnimation(content); // 获取到返回值后，开始打字动画
-                    this.chatContent=content;
-                    this.message.push({"role": "assistant", "content": content});//保存对话
-                    uni.hideLoading()
-                },
-                fail:err=>{
-                    uni.hideLoading()
-                    console.error('getApi 请求失败', err);
-                    uni.showToast({
-                        title: '请求失败',
-                        icon: 'none'
-                    });
-                    
-                }
-            })
+            this.chat()
+            uni.hideLoading()
         },
-        startTypingAnimation(text) {
-            const typingSpeed = 20;
-            let index = 0;
-            let typedText = '';
-            const timer = setInterval(() => {
-                typedText = text.slice(0, index + 1);
-                this.$set(this.chatArray, this.chatArray.length - 1, typedText);
-                index++;
-                this.scrollToBottom(); // 在文字打印完成后触发滚动函数
-                if (index === text.length) {
-                    clearInterval(timer);
-                }
-            }, typingSpeed);
-        },
+        // //开始打字动画
+        // startTypingAnimation(text) {
+        //     const typingSpeed = 20;
+        //     let index = 0;
+        //     let typedText = '';
+        //     const timer = setInterval(() => {
+        //         typedText = text.slice(0, index + 1);
+        //         this.$set(this.chatArray, this.chatArray.length - 1, typedText);
+        //         index++;
+        //         this.scrollToBottom(); // 在文字打印完成后触发滚动函数
+        //         if (index === text.length) {
+        //             clearInterval(timer);
+        //         }
+        //     }, typingSpeed);
+        // },
     },
     props: {
         name: {
@@ -198,6 +225,7 @@ export default{
     position: fixed;
     background-color: #efefef;
     .title-box{
+        background-color: #393939;
         display: flex;
         justify-content: space-between;
         .generate-title{
@@ -205,6 +233,7 @@ export default{
             margin-bottom: 10px;
             font-size: 50rpx;
             font-weight: bold;
+            color: white;
         }
         .my-user-profile-picture{
             height: 40px;
@@ -246,7 +275,7 @@ export default{
         margin-top: 5px;
         border-radius: 3px;
         padding: 5px 5px;
-        background-color: #d1d1d1;
+        background-color: #bfd8ea;
             .generate-text{
                 white-space: pre-wrap;
             }

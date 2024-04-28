@@ -64,7 +64,7 @@ import { LoginIn } from '../../util/LoginIn.js'
         },
         onShow(){
             this.userImage = uni.getStorageSync('userImage')
-        },  
+        },
         onLoad(option) {
             // 检查登录状态
             if(checkLogin()){//已登录
@@ -128,9 +128,18 @@ import { LoginIn } from '../../util/LoginIn.js'
         methods:{
             // 跳转菜单详情
             gotoMenuDetail(item){
-                uni.navigateTo({
-                     url: '/subpkg/menu_detail/menu_detail?name='+item.name 
-                })
+                if(!checkLogin()){
+                    uni.showToast({
+                        title: '请先登录',
+                        icon: 'none',
+                        mask: true
+                    })
+                }
+                else{
+                    uni.navigateTo({
+                        url: '/subpkg/menu_detail/menu_detail?name='+item.name 
+                    })
+                }
             },
             // 跳转设置
             gotoSetting(){
@@ -207,12 +216,12 @@ import { LoginIn } from '../../util/LoginIn.js'
     .my-userInfo-box{
         display: flex;
         justify-content: space-between;
-        background-color: #00CC66;
+        background-color: #393939;
         height: 180rpx;
         .my-userInfo{
             margin-left: 20px;
             display: flex;
-            background-color: #00CC66;
+            background-color: #393939;
             border: none;
             .my-user-profile-picture{
                 height: 60px;
